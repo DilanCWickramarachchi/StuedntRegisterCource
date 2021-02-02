@@ -27,7 +27,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @author : Dilan C. Wickramarachchi <dilancwickramarachchi@gmail.com>
  * @since : 2021-02-01
  **/
-@WebServlet(urlPatterns = "/api/v1/cources/*")
+@WebServlet(urlPatterns = "/api/v1/courses/*")
 public class CourseServlet extends HttpServlet {
     final Logger logger = LoggerFactory.getLogger(CourseServlet.class);
 
@@ -49,7 +49,7 @@ public class CourseServlet extends HttpServlet {
         try{
 
             if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
-                throw new HttpResponseException(400, "Invalid customer id", null);
+                throw new HttpResponseException(400, "Invalid course code", null);
             }
 
             String id = req.getPathInfo().replace("/", "");
@@ -104,7 +104,7 @@ public class CourseServlet extends HttpServlet {
             CourseDTO dto = jsonb.fromJson(req.getReader(), CourseDTO.class);
 
             if (dto.getCode() == null || dto.getDuration().trim().isEmpty() || dto.getDescription() == null || dto.getAudience().trim().isEmpty()) {
-                throw new HttpResponseException(400, "Invalid customer details", null);
+                throw new HttpResponseException(400, "Invalid course details", null);
             }
 
             CourseBO courseBO = BOFactory.getInstance().getBO(BOTypes.COURSE);
@@ -123,6 +123,31 @@ public class CourseServlet extends HttpServlet {
             em.close();
         }
 
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        EntityManager em = emf.createEntityManager();
+
+        try{
+
+            if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
+                throw new HttpResponseException(400, "Invalid course code", null);
+            }
+
+            String code = req.getPathInfo().replace("/", "");
+
+            CourseBO courseBO = BOFactory.getInstance().getBO(BOTypes.COURSE);
+            courseBO.setEntityManager(em);
+            courseBO.deleteCourse(code);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
     }
 
 
