@@ -5,11 +5,13 @@ import lk.ijse.dep.web.dao.DAOFactory;
 import lk.ijse.dep.web.dao.DAOType;
 import lk.ijse.dep.web.dao.custom.CourseDAO;
 import lk.ijse.dep.web.dto.CourseDTO;
+import lk.ijse.dep.web.dto.StudentDTO;
 import lk.ijse.dep.web.entity.Course;
 import lk.ijse.dep.web.entity.Student;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : Dilan C. Wickramarachchi <dilancwickramarachchi@gmail.com>
@@ -67,7 +69,16 @@ public class CourseBOImpl implements CourseBO {
 
     @Override
     public List<CourseDTO> findAllCourse() throws Exception {
-        return null;
+        try {
+            em.getTransaction().begin();
+            List<CourseDTO> collect = courseDAO.getAll().stream().
+                    map(c -> new CourseDTO(c.getCode(), c.getDescription(), c.getDuration(), c.getAudience())).collect(Collectors.toList());
+            em.getTransaction().commit();
+            return collect;
+        } catch (Throwable t) {
+            em.getTransaction().rollback();
+            throw t;
+        }
     }
 
 

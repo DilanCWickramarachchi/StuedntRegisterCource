@@ -1,5 +1,6 @@
 package lk.ijse.dep.web.dto;
 
+import lk.ijse.dep.web.entity.Audience;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,5 @@ public class CourseDTO implements Serializable {
     private String code;
     private String description;
     private String duration;
-    private String audience;
+    private Audience audience;
 }

@@ -10,6 +10,7 @@ import lk.ijse.dep.web.entity.Student;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : Dilan C. Wickramarachchi <dilancwickramarachchi@gmail.com>
@@ -33,7 +34,7 @@ public class StudentBOImpl implements StudentBO {
     public void saveStudent(StudentDTO dto) throws Exception {
         try{
             em.getTransaction().begin();
-            studentDAO.save(new Student(dto.getId(), dto.getName(), dto.getDob(), dto.getContact(), dto.getAddress(), dto.getGender()));
+            studentDAO.save(new Student(dto.getId(), dto.getName(), dto.getDob(), dto.getContact(), dto.getGender(),dto.getAddress()));
             em.getTransaction().commit();
         }catch (Throwable t){
             em.getTransaction().rollback();
@@ -45,7 +46,7 @@ public class StudentBOImpl implements StudentBO {
     public void updateStudent(StudentDTO dto) throws Exception {
         try{
             em.getTransaction().begin();
-            studentDAO.update(new Student(dto.getId(), dto.getName(), dto.getDob(), dto.getContact(), dto.getAddress(), dto.getGender()));
+            studentDAO.update(new Student(dto.getId(), dto.getName(), dto.getDob(), dto.getContact(),dto.getGender(),dto.getAddress()));
             em.getTransaction().commit();
         }catch (Throwable t){
             em.getTransaction().rollback();
@@ -67,7 +68,16 @@ public class StudentBOImpl implements StudentBO {
 
     @Override
     public List<StudentDTO> findAllStudents() throws Exception {
-        em.getTransaction().begin();
+        try {
+            em.getTransaction().begin();
+            List<StudentDTO> collect = studentDAO.getAll().stream().
+                    map(s -> new StudentDTO(s.getId(), s.getName(),s.getDob(),s.getGender(),s.getContact(), s.getAddress())).collect(Collectors.toList());
+            em.getTransaction().commit();
+            return collect;
+        } catch (Throwable t) {
+            em.getTransaction().rollback();
+            throw t;
+        }
     }
 
 

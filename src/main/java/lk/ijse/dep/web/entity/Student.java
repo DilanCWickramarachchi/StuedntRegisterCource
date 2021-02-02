@@ -3,13 +3,11 @@ package lk.ijse.dep.web.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.lang.annotation.Target;
 
 /**
  * @author : Dilan C. Wickramarachchi <dilancwickramarachchi@gmail.com>
@@ -29,4 +27,7 @@ public class Student implements SuperEntity {
     private String gender;
     @Embedded
     private Address address;
+
+    public Student(String id, String name, String dob, String contact, String gender, String address) {
+    }
 }

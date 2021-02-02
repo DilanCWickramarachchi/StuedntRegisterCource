@@ -32,13 +32,9 @@ public class RegisterBOImpl implements RegisterBO {
 //        registerDAO.setEntityManager(em);
     }
 
-    @Override
-    public void registerCourse(RegisterDTO registerDTO) throws Exception {
-
-    }
 
     @Override
-    public void registerStudent(RegisterDTO registerDTO) throws Exception {
+    public void registerCourseStudent(RegisterDTO registerDTO) throws Exception {
 
     }
 }

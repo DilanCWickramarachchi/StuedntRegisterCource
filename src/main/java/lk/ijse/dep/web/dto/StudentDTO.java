@@ -1,5 +1,6 @@
 package lk.ijse.dep.web.dto;
 
+import lk.ijse.dep.web.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,5 @@ public class StudentDTO implements Serializable {
     private String contact;
     private String dob;
     private String gender;
-    private String address;
+    private Address address;
 }

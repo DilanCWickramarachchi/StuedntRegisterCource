@@ -23,4 +23,7 @@ public class Course implements SuperEntity{
     private String description;
     private String duration;
     private Audience audience;
+
+    public Course(String code, String description, String duration, String audience) {
+    }
 }
